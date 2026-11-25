@@ -324,7 +324,7 @@ $("cancel").onclick = show;
 $("save").onclick = () => { const v = $("ta").value; if(v.trim()){ store.set("tab:"+cur, v); show(); applyTabInfo(v); } else show(); };
 $("del").onclick = () => { store.del("tab:"+cur); show(); };
 const UGOK = /^https:\/\/(tabs|www)\.ultimate-guitar\.com\//;
-function popup(url){ window.open(url, "ugtab"); }
+function popup(url){ window.open(url, "_blank", "noopener,noreferrer"); }
 const searchUrl = () => "https://www.ultimate-guitar.com/search.php?search_type=title&value=" + encodeURIComponent($("artist").textContent.split(",")[0] + " " + $("title").textContent);
 function searchUg(){ popup(searchUrl()); }
 function refreshUg(){
