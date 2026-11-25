@@ -14,11 +14,19 @@ Everything runs in your browser on your own computer. There is no server, no acc
 - **Recently played:** your last five songs and their artists. Click a song to play it. The guitar icon on each song opens its Ultimate Guitar page.
 - **Live spectrum:** a colourful frequency display from your microphone, with the kick and snare ranges emphasised, an estimated BPM, and an approximate musical key. One button saves the estimates into the song info.
 
+## Easiest way: use a hosted copy
+
+If someone has put Tabdeck online (for example on GitHub Pages) and added your Spotify account to their Spotify app, you do not need to install anything. Open the link they give you and press **Log in with Spotify**.
+
+If the owner shares a link ending in `?cid=` followed by their Spotify Client ID, Tabdeck fills the Client ID in for you.
+
+Spotify limits this. A Spotify app in development mode can only be used by its owner and up to five people the owner adds by name and email under **Users Management**. See the notes below.
+
 ## What you need
 
 - A Spotify account. Click-to-play and the playback buttons need **Spotify Premium**, and Spotify must be open on a device.
-- A free Spotify developer app (instructions below).
-- Python 3, or any other way of serving a folder over HTTP.
+- A Spotify developer app (instructions below). Under Spotify's 2026 rules, the account that owns the app needs **Spotify Premium**, each developer can have a limited number of apps, and each app can have only **five** authorized users. People you add do not need Premium themselves.
+- To run it on your own computer: Python 3, or any other way of serving a folder over HTTP. Not needed if you use a hosted copy.
 - A recent browser. It was built and used in Chrome on macOS. It should also work in Chrome and Edge on Windows, but that has not been tested, and Firefox and Safari are untested too.
 
 ## Setup
@@ -45,6 +53,15 @@ Everything runs in your browser on your own computer. There is no server, no acc
 
 If you use a different port, change it in the command and in the Redirect URI to match.
 
+### Hosting it yourself (for example GitHub Pages)
+
+1. Put `index.html` in a public GitHub repository and turn on **Settings, Pages**, deploying from the `main` branch.
+2. In your Spotify app's settings, add your Pages address as a Redirect URI, for example `https://your-name.github.io/your-repo/` (with the trailing slash). The login screen shows the exact address to use.
+3. Under **Users Management**, add each person who will use it (up to five).
+4. Share `https://your-name.github.io/your-repo/?cid=YOUR_CLIENT_ID`. A Client ID is a public identifier, not a secret, and it is never stored in the project files. Never share the client secret.
+
+Everyone's tabs, links and notes stay in their own browser. Nothing is stored on a server.
+
 ## Using it
 
 - Play a song in Spotify. Tabdeck picks it up within a few seconds.
@@ -70,6 +87,7 @@ If you use a different port, change it in the command and in the Redirect URI to
 | Problem | What to try |
 |---|---|
 | "Invalid redirect URI" when logging in | The Redirect URI in your Spotify app must be exactly `http://127.0.0.1:8888/`. |
+| Login works for you but not a friend | Add their Spotify name and email under Users Management in your Spotify app. Each app allows five people. |
 | Recent plays say Spotify needs permission | Press **Allow recent history** and approve the extra permission. |
 | Clicking a song does nothing | Playback control needs Premium and an active device. Press play once in Spotify, then try again. |
 | The page looks out of date after an update | Hard refresh with Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows). |

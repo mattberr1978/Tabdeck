@@ -243,10 +243,14 @@ main #tab,main #empty{top:var(--bh)}
 
 <div id="toast" class="hide" role="status"></div>
 <script>
-const REDIRECT = location.origin + "/";
+const REDIRECT = location.origin + location.pathname.replace(/index\.html$/, "");
 const $ = id => document.getElementById(id);
 const store = {get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
 $("ruri").textContent = REDIRECT;
+{ // A shared link like https://example.github.io/tabdeck/?cid=YOUR_CLIENT_ID fills in the Client ID, then tidies the address bar.
+  const q = new URLSearchParams(location.search).get("cid");
+  if(q && /^[A-Za-z0-9]{16,64}$/.test(q.trim())){ store.set("cid", q.trim()); history.replaceState({}, "", location.pathname); }
+}
 $("cid").value = store.get("cid") || "";
 
 const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
@@ -857,7 +861,7 @@ function frame(now){
   const code = new URLSearchParams(location.search).get("code");
   if(code){
     try{ await token({grant_type:"authorization_code",code,redirect_uri:REDIRECT,code_verifier:store.get("verifier")}); }catch(e){}
-    history.replaceState({}, "", "/");
+    history.replaceState({}, "", location.pathname);
   }
   await poll(); loadRecent(); setInterval(loadRecent, 60000); setInterval(poll, 4000); requestAnimationFrame(frame);
 })();
